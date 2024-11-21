@@ -44,6 +44,7 @@ export default {
   methods:{
     async getUser(){
       const res = await this.axios.get(this.baseUrl+"user/getUser")
+      console.log(res.data);
           this.sendUser(res.data);
           if(!res.data){
             await this.$router.replace("/login");
