@@ -8,10 +8,10 @@
     <el-form-item label="密码" prop="passwd">
       <el-input class=input_1 id=password type="password" name="passwd" v-model="user.passwd" placeholder="密码"/><br>
     </el-form-item>
-    <el-form-item label="验证码" prop="code">
+    <!-- <el-form-item label="验证码" prop="code">
       <el-image style="float: left;margin-left: 15%" :src="checkCodeUrl" @click="changeCheckCode"/>
       <el-input style="width: 50%;float: left" class="input_1" name="code" v-model="user.code" placeholder="验证码"/><br>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item style="margin: 0">
       <el-button type="primary" @click="login('userForm')">登录</el-button>
       <el-button @click="resetForm('userForm')">重置</el-button>
@@ -39,9 +39,6 @@ export default {
         ],
         passwd:[
           {required: true,message:'密码不能为空!',trigger: 'blur'},
-        ],
-        code:[
-          {required: true,message:'验证码不能为空!',trigger: 'blur'},
         ]
       }
     }
@@ -53,6 +50,10 @@ export default {
           this.axios.post(this.baseUrl+"user/login",this.$qs.stringify(this.user))
             .then(res=>{
               if(res.data.status){
+                const token = res.data.data;
+                debugger;
+                localStorage.setItem("token", token);
+                this.setAuthorizationToken(token);
                 this.renewHead();
                 this.$message.success("登录成功");
                 this.$router.replace("/");

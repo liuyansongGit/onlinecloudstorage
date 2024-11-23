@@ -18,6 +18,28 @@ import 'echarts/theme/macarons.js'
 import axios from "axios";
 Vue.prototype.axios = axios;
 axios.defaults.withCredentials = true     // 添加代码：允许跨域携带cookie
+// 登录成功后保存 Token 并设置到请求头
+export  function setAuthorizationToken(token) {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
+axios.defaults.timeout = 5000;
+// 在请求拦截器中自动添加 Authorization 头
+axios.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+Vue.prototype.setAuthorizationToken = setAuthorizationToken;
+
+Vue.prototype.axios = axios;
+// 如果需要其他的配置，也可以在这里做全局配置
+
+
+
 Vue.prototype.$echarts = echarts
 //发post请求用到的qs
 import qs from "qs";
@@ -31,8 +53,8 @@ Vue.use(VueClipboard);
 import 'font-awesome/css/font-awesome.min.css'
 
 //后端服务器地址
-//var baseUrl = "http://localhost:8090/onlinecloudstorage/";
-var baseUrl = "https://serve-ecb6fkekdsewegad.uksouth-01.azurewebsites.net/";
+var baseUrl = "http://localhost:8090/";
+//var baseUrl = "https://serve-ecb6fkekdsewegad.uksouth-01.azurewebsites.net/";
 Vue.prototype.baseUrl = baseUrl;
 
 //阿里巴巴矢量图标js

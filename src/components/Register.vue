@@ -42,10 +42,10 @@
         </el-select>
       </el-form-item>
       <!--验证码-->
-      <el-form-item label="验证码" prop="code" style="margin-top: 10px">
+      <!-- <el-form-item label="验证码" prop="code" style="margin-top: 10px">
         <el-image style="float: left;margin-left: 12%" :src="checkCodeUrl" @click="changeCheckCode"/>
         <el-input style="float: left;width: 50%" class="input_1" name="code" v-model="user.code" placeholder="验证码"/><br>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item style="margin: 0 auto">
         <el-button type="primary" @click="register('userForm')">注册</el-button>
         <el-button @click="resetForm('userForm')">重置</el-button>
@@ -150,9 +150,6 @@ export default {
         ],
         city:[
           {required:true,trigger:'blur'}
-        ],
-        code:[
-          {required: true,message:'验证码不能为空!',trigger: 'blur'},
         ]
       }
     }
