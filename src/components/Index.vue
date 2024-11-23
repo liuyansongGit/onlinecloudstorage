@@ -36,8 +36,8 @@ export default {
       path:[
         {dirName:'root/',fid:0},
       ],
-      parentId:0,//当前的父目录id
-      cid:0,//种类id
+      parentId:'67416069e2dc1f466ebe831',//当前的父目录id
+      cid:'6740519ce31055c1ab621efe',//种类id
       search:'',//搜索内容
     }
   },

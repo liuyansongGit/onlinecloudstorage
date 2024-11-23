@@ -66,8 +66,8 @@ export default {
     }
   },
   mounted() {
-    this.drawPieChart();
-    window.addEventListener('beforeunload', this.refreshChart);
+   // this.drawPieChart();
+   /// window.addEventListener('beforeunload', this.refreshChart);
   },
   methods:{ 
     refreshChart() {

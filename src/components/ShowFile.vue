@@ -45,10 +45,10 @@
     </el-table-column>
     <el-table-column fixed="right" label="操作" width="500">
         <template slot-scope="scope">
-          <el-button @click="shareId = scope.row.fid;visible = true;"   size="mini"  round><i class="fa fa-share" aria-hidden="true"></i>分享</el-button>
+          <!-- <el-button @click="shareId = scope.row.fid;visible = true;"   size="mini"  round><i class="fa fa-share" aria-hidden="true"></i>分享</el-button> -->
           <el-button :disabled="scope.row.cid===0 || scope.row.cid===5"   size="mini" type="success" @click="myPreView(scope.row)" round><i v-bind:class="{'fa fa-eye':scope.row.cid!==0,'fa fa-eye-slash':scope.row.cid===0 || scope.row.cid===5}" aria-hidden="true"></i>预览</el-button>
           <el-button @click="download(scope.row.fid,scope.row.isDir)" size="mini"  type="primary" round><i class="fa fa-download" aria-hidden="true"></i>下载</el-button>
-          <el-button @click="getFile(scope.row)" type="warning" size="mini" round><i class="fa fa-truck" aria-hidden="true"></i>移动</el-button>
+          <!-- <el-button @click="getFile(scope.row)" type="warning" size="mini" round><i class="fa fa-truck" aria-hidden="true"></i>移动</el-button> -->
           <el-button @click="del(scope.row.fid)" type="danger" size="mini" round><i class="fa fa-trash-o" aria-hidden="true"></i>删除</el-button>
         </template>
       </el-table-column>
