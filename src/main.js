@@ -52,7 +52,6 @@ Vue.use(VueClipboard);
 //font-awesome
 import 'font-awesome/css/font-awesome.min.css'
 
-//后端服务器地址
 ///var baseUrl = "http://localhost:8090/";
 var baseUrl = "https://serve-ecb6fkekdsewegad.uksouth-01.azurewebsites.net/";
 Vue.prototype.baseUrl = baseUrl;
