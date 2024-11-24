@@ -155,10 +155,8 @@ export default {
       
       await this.axios.get(this.baseUrl+"user/logOut");
        // 清除本地存储的用户信息和 Token
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token"); // 如果你使用 sessionStorage
-    // 重置 axios 的请求头
-    this.axios.defaults.headers.common["Authorization"] = "";
+       localStorage.setItem("token", '');
+       sessionStorage.setItem("token", '');
       await this.$router.replace("/login");
     },
     openPasswdForm(){

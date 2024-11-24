@@ -34,19 +34,19 @@
       </template>
     </el-table-column>
     <el-table-column label="文件大小" width="100px" prop="fileSize" sortable :formatter="sizeFormatter"/>
-    <el-table-column label="上传时间" prop="uploadTime" sortable :formatter="uploadTimeFormatter"/>
-    <el-table-column label="修改时间" prop="updateTime" sortable :formatter="updateTimeFormatter"/>
+    <el-table-column label="上传时间" prop="uploadTime" sortable />
+    <el-table-column label="修改时间" prop="updateTime" sortable />
     <el-table-column label="分类" prop="category.cname" sortable>
       <template slot-scope="scope">
         <span v-if="scope.row.isDir===0 && scope.row.category!==null">{{scope.row.category.cname}}</span>
-        <span v-else-if="scope.row.cid===5">其他</span>
+        <span v-else-if="scope.row.cid==='6740519ce31055c1ab621efe'">其他</span>
         <span v-else>-</span>
       </template>
     </el-table-column>
     <el-table-column fixed="right" label="操作" width="500">
-        <template slot-scope="scope">
-          <!-- <el-button @click="shareId = scope.row.fid;visible = true;"   size="mini"  round><i class="fa fa-share" aria-hidden="true"></i>分享</el-button> -->
-          <el-button :disabled="scope.row.cid===0 || scope.row.cid===5"   size="mini" type="success" @click="myPreView(scope.row)" round><i v-bind:class="{'fa fa-eye':scope.row.cid!==0,'fa fa-eye-slash':scope.row.cid===0 || scope.row.cid===5}" aria-hidden="true"></i>预览</el-button>
+        <template slot-scope="scope" >
+          <el-button @click="shareId = scope.row.fid;visible = true;"   size="mini"  round><i class="fa fa-share" aria-hidden="true"></i>分享</el-button>
+          <el-button :disabled="scope.row.cid==='0' || scope.row.cid==='6740519ce31055c1ab621efe'"   size="mini" type="success" @click="myPreView(scope.row)" round><i v-bind:class="{'fa fa-eye':scope.row.cid!=='0','fa fa-eye-slash':scope.row.cid==='0' || scope.row.cid==='6740519ce31055c1ab621efe'}" aria-hidden="true"></i>预览</el-button>
           <el-button @click="download(scope.row.fid,scope.row.isDir)" size="mini"  type="primary" round><i class="fa fa-download" aria-hidden="true"></i>下载</el-button>
           <!-- <el-button @click="getFile(scope.row)" type="warning" size="mini" round><i class="fa fa-truck" aria-hidden="true"></i>移动</el-button> -->
           <el-button @click="del(scope.row.fid)" type="danger" size="mini" round><i class="fa fa-trash-o" aria-hidden="true"></i>删除</el-button>
@@ -241,7 +241,8 @@ export default {
         if(!res.data.status){
           this.$message.error("分享失败");
         }else {
-          this.link = "http://localhost:8080/#/share?code="+res.data.msg;
+          //this.link = "http://localhost:8080/#/share?code="+res.data.msg;
+          this.link = "https://thankful-flower-0952df00f.5.azurestaticapps.net/#/share?code="+res.data.msg;
         }
       })
     },
@@ -281,15 +282,15 @@ export default {
     myPreView(file){
       const url = this.baseUrl+"view/"+file.user.uname+"/"+file.path;
       switch (file.cid){
-        case 1:
+        case '1':
           //图片
           this.$refs.image.imgPath = url;
           this.$refs.image.imgName = file.fname;
           this.$refs.image.visible = true;
           break;
-        case 2:
+        case '2':
           //docx格式
-          if(file.formatId===8){
+          if(file.formatId==='674049f5806cf2afe4adb232'){
             //不支持doc
             this.$refs.word.wordName = file.fname;
             this.$refs.word.wordURL = url;
@@ -301,7 +302,7 @@ export default {
           //   this.$refs.excel.excelURL = url;
           //   this.$refs.excel.visible = true;
           // }
-          else if(file.formatId===13){
+          else if(file.formatId==='674049f5806cf2afe4adb239'){
             this.$refs.pdf.pdfUrl = url;
             this.$refs.pdf.pdfName = file.fname;
             this.$refs.pdf.visible = true;
@@ -315,9 +316,9 @@ export default {
             });
           }
           break;
-        case 3:
+        case '3':
           //视频
-          if(file.formatId===14){
+          if(file.formatId==='674049f5806cf2afe4adb23b'){
             this.$refs.video.playerOptions.sources[0].src = url;
             this.$refs.video.videoName = file.fname;
             this.$refs.video.visible = true;
@@ -331,7 +332,7 @@ export default {
           }
 
           break;
-        case 4:
+        case '4':
           //音乐
           this.$refs.music.musicUrl = url;
           this.$refs.music.musicName = file.fname;

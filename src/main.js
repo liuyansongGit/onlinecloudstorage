@@ -28,6 +28,8 @@ axios.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
+  }else{
+    config.headers['Authorization'] = "";
   }
   return config;
 }, error => {
@@ -52,7 +54,7 @@ Vue.use(VueClipboard);
 //font-awesome
 import 'font-awesome/css/font-awesome.min.css'
 
-///var baseUrl = "http://localhost:8090/";
+//var baseUrl = "http://localhost:8090/";
 var baseUrl = "https://serve-ecb6fkekdsewegad.uksouth-01.azurewebsites.net/";
 Vue.prototype.baseUrl = baseUrl;
 

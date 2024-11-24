@@ -4,7 +4,7 @@
     <el-button type="primary" @click="$refs.upload.parentId = parentId;$refs.upload.visible = true"><i class="fa fa-upload" aria-hidden="true"></i>上传文件</el-button>
     <el-button type="primary" @click="openNewDir"><i class="fa fa-folder" aria-hidden="true"></i>新建文件夹</el-button>
     <el-button type="primary" @click="packDownload">打包下载</el-button>
-    <el-button type="danger" @click="delMulti"><i class="fa fa-trash" aria-hidden="true"></i>批量删除</el-button>
+    <!-- <el-button type="danger" @click="delMulti"><i class="fa fa-trash" aria-hidden="true"></i>批量删除</el-button> -->
     <div style="float: right;width: 30%">
       <el-input v-model="search" placeholder="你想搜..." style="width: 60%"/>
       <el-button type="primary" @click="searchFile"><i class="fa fa-search" aria-hidden="true"></i>搜索</el-button>
@@ -36,8 +36,8 @@ export default {
       path:[
         {dirName:'root/',fid:0},
       ],
-      parentId:'67416069e2dc1f466ebe831',//当前的父目录id
-      cid:'6740519ce31055c1ab621efe',//种类id
+      parentId:'0',//当前的父目录id
+      cid:'0',//种类id
       search:'',//搜索内容
     }
   },
