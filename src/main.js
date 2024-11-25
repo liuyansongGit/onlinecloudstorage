@@ -22,7 +22,7 @@ axios.defaults.withCredentials = true     // 添加代码：允许跨域携带co
 export  function setAuthorizationToken(token) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 80000;
 // 在请求拦截器中自动添加 Authorization 头
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
