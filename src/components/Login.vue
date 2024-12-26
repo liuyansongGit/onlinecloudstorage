@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form class="myForm" :model="user" label-width="80px" name="form1" :rules="rules" ref="userForm">
-      <h1>Shared Cloud Storage System</h1>
+      <h1 style="color:darkorange"> Welcome to Shared Cloud Storage System</h1>
       <el-form-item label="Username" prop="uname">
         <el-input class=input_1 id=username name="uname" v-model="user.uname" placeholder="Username"/><br>
       </el-form-item>
