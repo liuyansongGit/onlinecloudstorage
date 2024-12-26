@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-form class="myForm" :model="user" label-width="80px" name="form1" :rules="rules" ref="userForm">
-      <h1>Shared Cloud Storage System</h1>
+      <h1 style="color:#409EFF"> welcome Shared Cloud Storage System</h1>
       <el-form-item label="Username" prop="uname">
         <el-input class=input_1 id=username name="uname" v-model="user.uname" placeholder="Username"/><br>
       </el-form-item>
       <el-form-item label="Password" prop="passwd">
         <el-input class=input_1 id=password type="password" name="passwd" v-model="user.passwd" placeholder="Password"/><br>
       </el-form-item>
-      <!-- <el-form-item label="Verification Code" prop="code">
+      <!-- <el-form-item#03A9F4 label="Verification Code" prop="code">
         <el-image style="float: left;margin-left: 15%" :src="checkCodeUrl" @click="changeCheckCode"/>
         <el-input style="width: 50%;float: left" class="input_1" name="code" v-model="user.code" placeholder="Verification Code"/><br>
       </el-form-item> -->
