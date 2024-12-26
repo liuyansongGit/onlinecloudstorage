@@ -134,9 +134,9 @@ export default {
       shareId:0,//
       shareTime:1,//
       timeArray:[
-        {time: '3天',label: 1},
-        {time: '7天',label: 2},
-        {time: '永久',label: 3},
+        {time: '3days',label: 1},
+        {time: '7days',label: 2},
+        {time: 'forever',label: 3},
       ],
       link:'',//文件分享链接
     }
@@ -177,13 +177,13 @@ export default {
     download(fid,isDir){
       location.href = this.baseUrl+"download/f/"+fid;
       if(isDir===1){
-        this.$message.info("下载将在压缩包构建完毕后开始");
+        this.$message.info("The download will start after the compressed package is built");
       }
     },
     del(fid){
-      this.$confirm('文件删除后不可恢复,是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('The file cannot be restored after deletion. Do you want to continue?', 'tip', {
+        confirmButtonText: 'sure',
+        cancelButtonText: 'cancel',
         type: 'warning'
       }).then(() => {
         this.axios.delete(this.baseUrl+"file/del",{
@@ -196,11 +196,11 @@ export default {
           }
         }).then(res=>{
               if(res.data){
-                this.$message.success("删除成功");
-                this.renewVolume();// 告诉父组件 刷新 用户网盘容量信息
-                this.renewShowFile();//告诉父组件 刷新 ShowFile组件
+                this.$message.success("Delete successfully");
+                this.renewVolume();
+                this.renewShowFile();
               }else {
-                this.$message.error("删除失败");
+                this.$message.error("Delete failed");
               }
             })
       })
@@ -217,7 +217,7 @@ export default {
         time:time
       })).then(res=>{
         if(!res.data.status){
-          this.$message.error("分享失败");
+          this.$message.error("Sharing failed");
         }else {
           //this.link = "http://localhost:8080/#/share?code="+res.data.msg;
           this.link = "https://thankful-flower-0952df00f.5.azurestaticapps.net/#/share?code="+res.data.msg;
@@ -236,11 +236,11 @@ export default {
     },
     //复制成功事件
     handleCopySuccess(value,e){
-      this.$message.success("复制成功");
+      this.$message.success("Replicating Success");
     },
     //复制失败事件
     handleCopyError(value,e){
-      this.$message.error("复制失败");
+      this.$message.error("copy failed");
     },
     //去分页页面
     goShare(){
@@ -289,8 +289,8 @@ export default {
             const h = this.$createElement;
 
             this.$notify({
-              title: '提示消息',
-              message: h('i', { style: 'color: teal'}, '目前文档预览只支持 .docx和.pdf 格式')
+              title: 'Prompt message',
+              message: h('i', { style: 'color: teal'}, 'Currently, document preview only supports. docx and. pdf formats')
             });
           }
           break;
@@ -304,8 +304,8 @@ export default {
             const h = this.$createElement;
 
             this.$notify({
-              title: '提示消息',
-              message: h('i', { style: 'color: teal'}, '目前视频预览只支持 .mp4 格式')
+              title: 'Prompt message',
+              message: h('i', { style: 'color: teal'}, 'Currently, video preview only supports. mp4 format')
             });
           }
 
