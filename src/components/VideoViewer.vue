@@ -1,63 +1,64 @@
 <template>
-<div>
-  <el-dialog
-    :title="'视频 '+videoName"
-    :visible.sync="visible"
-    width="60%"
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    center
-    :destroy-on-close="true"
-  >
-  <video-player
-    class="video-player vjs-custom-skin"
-    ref="videoPlayer"
-    :playsinline="true"
-    :options="playerOptions"></video-player>
-  </el-dialog>
-</div>
-</template>
-
-<script>
-import { videoPlayer } from 'vue-video-player'
-import 'video.js/dist/video-js.css'
-import 'vue-video-player/src/custom-theme.css'
-export default {
-  name: "VideoViewer",
-  components:{videoPlayer},
-  data(){
-    return{
-      videoName:'',
-      visible:false,
-      playerOptions: {
-        playbackRates: [0.7, 1.0, 1.25, 1.5, 2.0], // 播放速度
-        autoplay: false, // 如果true,浏览器准备好时开始回放。
-        muted: false, // 默认情况下将会消除任何音频。
-        loop: false, // 导致视频一结束就重新开始。
-        preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
-        language: 'zh-CN',
-        aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-        fluid: true, // 当true时, player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-        sources: [
-          {
-            type: 'video/mp4', // 类型
-            src: 'http://localhost:8090/netdisk/view/hapehape/25.马克思主义原理-价值规律与简单商品经济的基本矛盾 -2.mp4', //url地址
+  <div>
+    <el-dialog
+      :title="'Video '+videoName"
+      :visible.sync="visible"
+      width="60%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      center
+      :destroy-on-close="true"
+    >
+    <video-player
+      class="video-player vjs-custom-skin"
+      ref="videoPlayer"
+      :playsinline="true"
+      :options="playerOptions"></video-player>
+    </el-dialog>
+  </div>
+  </template>
+  
+  <script>
+  import { videoPlayer } from 'vue-video-player'
+  import 'video.js/dist/video-js.css'
+  import 'vue-video-player/src/custom-theme.css'
+  export default {
+    name: "VideoViewer",
+    components:{videoPlayer},
+    data(){
+      return{
+        videoName:'',
+        visible:false,
+        playerOptions: {
+          playbackRates: [0.7, 1.0, 1.25, 1.5, 2.0], // Playback speed
+          autoplay: false, // If true, playback starts as soon as the browser is ready.
+          muted: false, // Mutes audio by default.
+          loop: false, // Loops the video when it finishes.
+          preload: 'auto', // Suggests to the browser whether it should start downloading video data after the <video> element is loaded. 'auto' lets the browser decide.
+          language: 'en', // Language
+          aspectRatio: '16:9', // Sets the aspect ratio for the player. It should be in a format like "16:9" or "4:3"
+          fluid: true, // When true, the player will scale proportionally to fit its container.
+          sources: [
+            {
+              type: 'video/mp4', // Type
+              src: 'http://localhost:8090/netdisk/view/hapehape/25.MarxistPrinciples-ValueLawAndTheBasicContradictionOfSimpleCommodityEconomy-2.mp4', // URL address
+            },
+          ],
+          poster: '', // Poster image URL
+          notSupportedMessage: 'This video cannot be played at the moment, please try again later', // Custom message displayed when Video.js cannot play the media source.
+          controlBar: {
+            timeDivider: true, // Divider between current time and duration
+            durationDisplay: true, // Show duration
+            remainingTimeDisplay: false, // Whether to show remaining time
+            fullscreenToggle: true, // Fullscreen button
           },
-        ],
-        poster: '', // 封面地址
-        notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
-        controlBar: {
-          timeDivider: true, // 当前时间和持续时间的分隔符
-          durationDisplay: true, // 显示持续时间
-          remainingTimeDisplay: false, // 是否显示剩余时间功能
-          fullscreenToggle: true, // 全屏按钮
         },
-      },
+      }
     }
   }
-}
-</script>
-
-<style scoped>
-
-</style>
+  </script>
+  
+  <style scoped>
+  
+  </style>
+  

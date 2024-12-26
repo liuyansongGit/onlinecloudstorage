@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="'文档 '+ pdfName"
+      :title="'Document ' + pdfName"
       :visible.sync="visible"
       width="80%"
       :close-on-click-modal="false"
@@ -22,11 +22,11 @@
         </div>
         <div class="pdf_footer">
           <div class="info">
-            <div>当前页数/总页数：{{pageNum}}/{{pageTotalNum}}</div>
+            <div>Current page / Total pages: {{pageNum}} / {{pageTotalNum}}</div>
           </div>
           <div class="operate">
-            <el-button type="primary" @click.stop="prePage">上一页</el-button>
-            <el-button type="primary" @click.stop="nextPage">下一页</el-button>
+            <el-button type="primary" @click.stop="prePage">Previous Page</el-button>
+            <el-button type="primary" @click.stop="nextPage">Next Page</el-button>
           </div>
         </div>
       </div>
@@ -38,38 +38,38 @@
 import pdf from 'vue-pdf'
 export default {
   name: "PdfViewer",
-  components:{pdf},
-  data(){
-    return{
-      pdfUrl:'',
-      visible:false,
-      pdfName:'',
-      // 总页数
+  components: { pdf },
+  data() {
+    return {
+      pdfUrl: '',
+      visible: false,
+      pdfName: '',
+      // Total number of pages
       pageTotalNum: 1,
-      // 当前页数
+      // Current page number
       pageNum: 1,
-      // 放大系数 默认百分百
+      // Zoom scale, default 100%
       scale: 0,
-      // 旋转角度 ‘90’的倍数才有效
+      // Rotation angle (only multiples of 90 are valid)
       pageRotate: 0,
-      // 单击内部链接时触发 (目前我没有遇到使用场景)
+      // Triggered when a link inside is clicked (currently no use case)
       page: 0,
-      }
-    },
+    }
+  },
   methods: {
-    // 切换上一页
+    // Switch to previous page
     prePage() {
       var p = this.pageNum;
       p = p > 1 ? p - 1 : this.pageTotalNum;
       this.pageNum = p;
     },
-    // 切换下一页
+    // Switch to next page
     nextPage() {
       var p = this.pageNum;
       p = p < this.pageTotalNum ? p + 1 : 1;
       this.pageNum = p;
     },
-    handleClose(done){
+    handleClose(done) {
       this.pageTotalNum = 1;
       this.pageNum = 1;
       this.scale = 0;
@@ -78,7 +78,6 @@ export default {
       done();
     }
   },
-
 }
 </script>
 

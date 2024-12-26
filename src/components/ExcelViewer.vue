@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="'文档 '+excelName"
+      :title="'Document ' + excelName"
       :visible.sync="visible"
       width="80%"
       :close-on-click-modal="false"
@@ -21,37 +21,37 @@ export default {
   name: "ExcelViewer",
   data(){
     return{
-      excelName:'',
-      excelURL: "", //文件地址，看你对应怎末获取、赋值
-      visible:false
+      excelName: '',
+      excelURL: "", // File URL, depends on how you retrieve and assign it
+      visible: false
     }
   },
   methods:{
     view(url){
-      // 加载 excel 文件
+      // Load the Excel file
       LuckyExcel.transformExcelToLuckyByUrl(url, this.excelName, (exportJson, luckysheetfile) => {
         console.log(exportJson);
         console.log(luckysheetfile);
-        if(exportJson.sheets==null || exportJson.sheets.length===0){
-          alert("文件读取失败!");
+        if(exportJson.sheets == null || exportJson.sheets.length === 0){
+          alert("Failed to read the file!");
           return;
         }
-        // 销毁原来的表格
+        // Destroy the existing sheet
         window.luckysheet.destroy();
-        // 重新创建新表格
+        // Create a new sheet
         window.luckysheet.create({
-          container: 'mysheet', // 设定DOM容器的id
-          showtoolbar: false, // 是否显示工具栏
-          showinfobar: false, // 是否显示顶部信息栏
-          showstatisticBar: false, // 是否显示底部计数栏
-          sheetBottomConfig: false, // sheet页下方的添加行按钮和回到顶部按钮配置
-          allowEdit: false, // 是否允许前台编辑
-          enableAddRow: false, // 是否允许增加行
-          enableAddCol: false, // 是否允许增加列
-          sheetFormulaBar: false, // 是否显示公式栏
-          enableAddBackTop: false,//返回头部按钮
-          data:exportJson.sheets, //表格内容
-          title:exportJson.info.name  //表格标题
+          container: 'mysheet', // Set the DOM container ID
+          showtoolbar: false, // Show toolbar
+          showinfobar: false, // Show top info bar
+          showstatisticBar: false, // Show bottom statistics bar
+          sheetBottomConfig: false, // Bottom configuration for add row button and back to top button
+          allowEdit: false, // Allow frontend editing
+          enableAddRow: false, // Allow adding rows
+          enableAddCol: false, // Allow adding columns
+          sheetFormulaBar: false, // Show formula bar
+          enableAddBackTop: false, // Back to top button
+          data: exportJson.sheets, // Sheet content
+          title: exportJson.info.name  // Sheet title
         });
       });
     },
@@ -61,7 +61,7 @@ export default {
     }
   },
   watch:{
-    excelURL(newData,oldData){
+    excelURL(newData, oldData){
       this.view(newData);
     }
   },

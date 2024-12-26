@@ -7,23 +7,23 @@
       mode="horizontal"
       style="padding: 0 10px;box-shadow: 0 1px 0 rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
       <!-- <el-image :src="require('../assets/images/logo.jpg')" style="float: left;width:190px;height: 40px;margin-top: 10px"></el-image> -->
-      <el-menu-item  style="float: left;width:190px;height: 40px;margin-top: 10px;font-size: 15px;">共享云盘系统</el-menu-item>
-      <el-menu-item index="/index">首页</el-menu-item>
+      <el-menu-item  style="float: left;width:190px;height: 40px;margin-top: 10px;font-size: 15px;">Shared Cloud Disk</el-menu-item>
+      <el-menu-item index="/index">Home</el-menu-item>
   <!--    <div style="float: right;margin-top: 10px">-->
       <div style="margin: 10px 5%;float: right">
-        <el-button v-if="!user" type="text" style="margin-right: 10px" @click="$router.replace('/register')">注册</el-button>
+        <el-button v-if="!user" type="text" style="margin-right: 10px" @click="$router.replace('/register')">Register</el-button>
         <el-dropdown v-if="user">
           <div style="margin-top: 9px"><i class="el-icon-user-solid"></i><span>{{user.uname}}</span></div>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item><div @click="visible = true;"><i class="fa fa-info" aria-hidden="true"></i>个人信息</div></el-dropdown-item>
-            <el-dropdown-item><div @click="logOut"><i class="fa fa-sign-out" aria-hidden="true"></i>退出</div></el-dropdown-item>
+            <el-dropdown-item><div @click="visible = true;"><i class="fa fa-info" aria-hidden="true"></i>Profile</div></el-dropdown-item>
+            <el-dropdown-item><div @click="logOut"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</div></el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button v-else type="text" style="margin-right: 10px" @click="$router.replace('/login')">登录</el-button>
+        <el-button v-else type="text" style="margin-right: 10px" @click="$router.replace('/login')">Login</el-button>
       </div>
     </el-menu>
     <el-dialog
-      title="个人信息"
+      title="Profile"
       :visible.sync="visible"
       width="50%"
       :close-on-click-modal="false"
@@ -35,20 +35,20 @@
     >
       <el-descriptions class="margin-top" :title="info.uname" :column="3" border>
         <template slot="extra">
-          <el-button type="primary" size="mini" @click="openPasswdForm">修改密码</el-button>
+          <el-button type="primary" size="mini" @click="openPasswdForm">Change Password</el-button>
         </template>
         <el-descriptions-item>
           <template slot="label">
             <i class="fa fa-user" aria-hidden="true"></i>
-            身份
+            Role
           </template>
-          <span v-if="info.role===1">用户</span>
-          <span v-else>管理员</span>
+          <span v-if="info.role===1">User</span>
+          <span v-else>Admin</span>
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="fa fa-user-circle" aria-hidden="true"></i>
-            昵称
+            Nickname
           </template>
           {{info.uname}}
         </el-descriptions-item>
@@ -56,42 +56,42 @@
           <template slot="label">
             <i v-if="info.gender===1" class="fa fa-mars" aria-hidden="true"></i>
             <i v-else class="fa fa-venus" aria-hidden="true"></i>
-            性别
+            Gender
           </template>
-          <span v-if="info.gender===1">男</span>
-          <span v-else>女</span>
+          <span v-if="info.gender===1">Male</span>
+          <span v-else>Female</span>
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
-            居住地
+            Location
           </template>
           {{info.city}}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="fa fa-calendar" aria-hidden="true"></i>
-            出生日期
+            Birthdate
           </template>
           {{info.birthday}}
         </el-descriptions-item>
       </el-descriptions>
       <div style="margin-top: 10px" v-show="passwdVisible">
         <el-form ref="userForm" :model="form" :rules="rules">
-          <el-form-item label="旧密码" prop="oldPasswd">
+          <el-form-item label="Old Password" prop="oldPasswd">
             <el-input style="width: 85%;float: right" type="password" v-model="form.oldPasswd"/>
           </el-form-item>
-          <el-form-item label="新密码" prop="newPasswd">
+          <el-form-item label="New Password" prop="newPasswd">
             <el-input style="float: right;width: 85%" type="password" v-model="form.newPasswd"/>
           </el-form-item>
-          <el-form-item label="验证码" prop="code">
+          <el-form-item label="Verification Code" prop="code">
             <el-input style="float: right;width: 70%" v-model="form.code"/>
             <el-image style="float: right;margin-right: 2%" :src="checkCodeUrl" @click="changeCheckCode"/>
           </el-form-item>
         </el-form>
         <div style="width: fit-content;margin: 0 auto" slot="footer" class="dialog-footer">
-          <el-button @click="cancel('userForm')">取 消</el-button>
-          <el-button type="primary" @click="changePasswd('userForm')">提 交</el-button>
+          <el-button @click="cancel('userForm')">Cancel</el-button>
+          <el-button type="primary" @click="changePasswd('userForm')">Submit</el-button>
         </div>
       </div>
     </el-dialog>
@@ -107,18 +107,18 @@ export default {
   data(){
     var validateOldPasswd = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入旧密码'));
+        callback(new Error('Please enter the old password'));
       } else if (value !== this.info.passwd) {
-        callback(new Error('旧密码输入错误!'));
+        callback(new Error('Incorrect old password!'));
       } else {
         callback();
       }
     };
     var validateNewPasswd = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入新密码'));
+        callback(new Error('Please enter a new password'));
       } else if (value === this.info.passwd) {
-        callback(new Error('新密码不能和旧密码相同!'));
+        callback(new Error('The new password cannot be the same as the old password!'));
       } else {
         callback();
       }
@@ -129,7 +129,7 @@ export default {
       info:'',
       already:0,
       passwdVisible:false,
-      checkCodeUrl:'',//验证码url
+      checkCodeUrl:'',// Verification code URL
       form:{
         oldPasswd:'',
         newPasswd:'',
@@ -145,16 +145,15 @@ export default {
           {required:true,trigger:'blur'}
         ],
         code:[
-          {required:true,message:'请输入验证码',trigger:'blur'}
+          {required:true,message:'Please enter the verification code',trigger:'blur'}
         ]
       }
     }
   },
   methods:{
     async logOut(){
-      
       await this.axios.get(this.baseUrl+"user/logOut");
-       // 清除本地存储的用户信息和 Token
+       // Clear locally stored user information and tokens
        localStorage.setItem("token", '');
        sessionStorage.setItem("token", '');
       await this.$router.replace("/login");
@@ -182,7 +181,7 @@ export default {
           })).then(res=>{
             if(res.data.status){
               this.cancel('userForm');
-              this.$message.success("修改成功,请重新登录");
+              this.$message.success("Password changed successfully, please log in again");
               this.$router.replace("/login");
             }else {
               this.$message.error(res.data.msg);
@@ -210,7 +209,7 @@ export default {
 </script>
 
 <style>
-/* el-descriptions-item 文字居中 */
+/* Center text in el-descriptions-item */
 .el-descriptions__body .el-descriptions__table .el-descriptions-item__cell {
   text-align: center;
 }
