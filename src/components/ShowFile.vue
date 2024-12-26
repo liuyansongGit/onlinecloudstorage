@@ -93,12 +93,235 @@
         <el-button size="mini" @click="cancel">Cancel</el-button>
       </span>
     </el-dialog>
-    <!-- Additional components such as viewers are retained with their respective names -->
+    <Explorer ref="explorer" :renew-show-file="renewExplorer"/>
+  <!--预览图片-->
+  <ImageViewer ref="image"/>
+  <!--预览word-->
+  <WordViewer ref="word"/>
+  <!--预览excel-->
+  <ExcelViewer ref="excel"/>
+  <!--预览pdf-->
+  <PdfViewer ref="pdf"/>
+  <!--预览视频-->
+  <VideoViewer ref="video"/>
+  <!--预览音乐-->
+  <MusicViewer ref="music"/>
   </div>
   </template>
   
-  <script>
-  // The script section is unchanged, as variable and method names are already in English.
+<script>
+import App from "../App";
+import Explorer from "./Explorer";
+import ImageViewer from "./ImageViewer";
+import WordViewer from "./WordViewer";
+import ExcelViewer from "./ExcelViewer";
+import PdfViewer from "./PdfViewer";
+import MusicViewer from "./MusicViewer";
+import VideoViewer from "./VideoViewer";
+export default {
+  inject:['reload'],
+  name: "ShowFile",
+  components:{VideoViewer, MusicViewer, PdfViewer, ExcelViewer, WordViewer, ImageViewer, Explorer, App},
+  props:['getDir','renewShowFile','renewVolume'],
+  data(){
+    return{
+      file:[
+        // {fid:1,fName:'1.txt',fileSize:0,isDir:0,uploadTime:'2022-07-09 13:55:03',updateTime:'2022-08-24 14:22:33',category:{cname:'文档'}},
+        // {fid:2,fName:'dir',fileSize:0,isDir:1,uploadTime:'2022-07-09 13:55:03',updateTime:'2022-08-24 14:22:33'},
+      ],
+      selected:[],//当前选中的
+      visible:false,
+      shareId:0,//
+      shareTime:1,//
+      timeArray:[
+        {time: '3天',label: 1},
+        {time: '7天',label: 2},
+        {time: '永久',label: 3},
+      ],
+      link:'',//文件分享链接
+    }
+  },
+  methods:{
+    handleSelectionChange(val){
+      this.selected = val;
+    },
+    //转换单位
+    changeUnit(size){
+      if (!size) return ''
+      if (size < Math.pow(1024,1)) return size + ' B'
+      if (size < Math.pow(1024,2)) return (size / Math.pow(1024,1)).toFixed(2) + ' KB'
+      if (size < Math.pow(1024,3)) return (size / Math.pow(1024,2)).toFixed(2) + ' MB'
+      if (size < Math.pow(1024,4)) return (size / Math.pow(1024,3)).toFixed(2) + ' GB'
+      return (size / Math.pow(1024,4)).toFixed(2) + ' TB'
+    },
+    uploadTimeFormatter(row,column){
+      let r = row.uploadTime;
+      r = r.substring(0,r.lastIndexOf("."));
+      return r;
+    },
+    updateTimeFormatter(row,column){
+      let r = row.updateTime;
+      r = r.substring(0,r.lastIndexOf("."));
+      return r;
+    },
+    sizeFormatter(row,column){
+      let r = row.fileSize;
+      if(r===0)return '-';
+      r = this.changeUnit(row.fileSize);
+      return r;
+    },
+    //点击文件夹向父组件发送id和文件夹名
+    sendDir(fid,fName){
+      this.getDir(fid,fName);
+    },
+    download(fid,isDir){
+      location.href = this.baseUrl+"download/f/"+fid;
+      if(isDir===1){
+        this.$message.info("下载将在压缩包构建完毕后开始");
+      }
+    },
+    del(fid){
+      this.$confirm('文件删除后不可恢复,是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios.delete(this.baseUrl+"file/del",{
+          params:{
+            fids:[fid],
+            type:1
+          },
+          paramsSerializer:params => {
+            return this.$qs.stringify(params,{indices:false})
+          }
+        }).then(res=>{
+              if(res.data){
+                this.$message.success("删除成功");
+                this.renewVolume();// 告诉父组件 刷新 用户网盘容量信息
+                this.renewShowFile();//告诉父组件 刷新 ShowFile组件
+              }else {
+                this.$message.error("删除失败");
+              }
+            })
+      })
+    },
+    shareFile(){
+      if(this.shareId===0)return;
+      let time = 3600*1000*24;
+      switch (this.shareTime){
+        case 1:time = time*3;break;
+        case 2:time = time*7;break;
+        case 3:time = 0;break;
+      }
+      this.axios.put(this.baseUrl+"file/share/"+this.shareId,this.$qs.stringify({
+        time:time
+      })).then(res=>{
+        if(!res.data.status){
+          this.$message.error("分享失败");
+        }else {
+          //this.link = "http://localhost:8080/#/share?code="+res.data.msg;
+          this.link = "https://thankful-flower-0952df00f.5.azurestaticapps.net/#/share?code="+res.data.msg;
+        }
+      })
+    },
+    handleShareClose(done){
+      this.cancel();
+      done();
+    },
+    cancel(){
+      this.visible = false;
+      this.link = '';
+      this.shareId = 0;
+      this.shareTime = 1;
+    },
+    //复制成功事件
+    handleCopySuccess(value,e){
+      this.$message.success("复制成功");
+    },
+    //复制失败事件
+    handleCopyError(value,e){
+      this.$message.error("复制失败");
+    },
+    //去分页页面
+    goShare(){
+      window.open(this.link);
+    },
+    getFile(file){
+      this.$refs.explorer.targetFile = file;
+      this.$refs.explorer.visible = true;
+    },
+    //刷新Explorer组件
+    renewExplorer(){
+      this.$refs.explorer.files.pop();
+      this.$refs.explorer.getFileStructure();
+      this.renewShowFile();
+    },
+    //预览按钮点击事件
+    myPreView(file){
+      const url = this.baseUrl+"view/"+file.user.uname+"/"+file.path;
+      switch (file.cid){
+        case '1':
+          //图片
+          this.$refs.image.imgPath = url;
+          this.$refs.image.imgName = file.fname;
+          this.$refs.image.visible = true;
+          break;
+        case '2':
+          //docx格式
+          if(file.formatId==='674049f5806cf2afe4adb232'){
+            //不支持doc
+            this.$refs.word.wordName = file.fname;
+            this.$refs.word.wordURL = url;
+            this.$refs.word.visible = true;
+          }
+          // //xls,xlsx格式
+          // else if(file.formatId===9 || file.formatId===10){
+          //   this.$refs.excel.excelName = file.fname;
+          //   this.$refs.excel.excelURL = url;
+          //   this.$refs.excel.visible = true;
+          // }
+          else if(file.formatId==='674049f5806cf2afe4adb239'){
+            this.$refs.pdf.pdfUrl = url;
+            this.$refs.pdf.pdfName = file.fname;
+            this.$refs.pdf.visible = true;
+          }
+          else {
+            const h = this.$createElement;
+
+            this.$notify({
+              title: '提示消息',
+              message: h('i', { style: 'color: teal'}, '目前文档预览只支持 .docx和.pdf 格式')
+            });
+          }
+          break;
+        case '3':
+          //视频
+          if(file.formatId==='674049f5806cf2afe4adb23b'){
+            this.$refs.video.playerOptions.sources[0].src = url;
+            this.$refs.video.videoName = file.fname;
+            this.$refs.video.visible = true;
+          }else {
+            const h = this.$createElement;
+
+            this.$notify({
+              title: '提示消息',
+              message: h('i', { style: 'color: teal'}, '目前视频预览只支持 .mp4 格式')
+            });
+          }
+
+          break;
+        case '4':
+          //音乐
+          this.$refs.music.musicUrl = url;
+          this.$refs.music.musicName = file.fname;
+          this.$refs.music.visible = true;
+          break;
+      }
+    }
+  },
+  mounted() {
+  }
+}
   </script>
   
   <style scoped>
